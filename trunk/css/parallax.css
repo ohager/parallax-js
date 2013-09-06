@@ -1,0 +1,54 @@
+body{
+    width: 630px;
+}
+
+.content{   
+    float : left;
+    color : white;
+    font-size: 3em;
+    margin: 1em;
+}
+
+.scroller{
+    width:100%;
+    height: 340px;
+}
+
+.scroller-layer0{
+    width:100%;
+    height: 500px;
+    background-image: url('../img/tex5.jpg');
+    background-repeat: repeat;
+    background-position: 0px 0px;
+    background-attachment: fixed;       
+}
+
+.scroller-layer1{
+    width:100%;
+    height: 500px;
+    background-image: url('../img/texttex.png');
+    background-repeat: repeat;
+    background-position: 0px 0px;
+    background-attachment: fixed;
+    
+}
+
+
+.scroller-layer2{
+    width:100%;
+    height: 540px;
+    background-image: url('../img/tex3.png');
+    background-repeat: repeat;
+    background-position: 0px 240px;
+    background-attachment: fixed;
+    
+}
+
+.outline{    
+    width:100%;
+    height: 600px;
+    background-image: url('../img/aufgerissen.png');
+    background-repeat:no-repeat;
+    background-position: 0px -20px;
+    background-attachment: fixed;
+}
