@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>PARALLAX SCROLLER</title>
+        <meta name="description" content="Testbed for parallax scroller development.">
+        
+        <link rel="stylesheet" href="css/parallax.css">    
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="application/javascript"> </script>
+        <script src="js/requestAnimationFrame.js" type="application/javascript"></script>
+        <script src="js/parallax.js" > </script>
+        
+        <script type="application/javascript">
+            
+            $(function(){
+                
+                function sinEaseFunc(elapsedSeconds, step){                                    
+                    return Math.sin(elapsedSeconds/10)*step;
+                }
+                
+                function cosEaseFunc(elapsedSeconds, step){                                    
+                    return Math.cos(elapsedSeconds/10)*step;
+                }
+
+                var scroller = new ParallaxScroller({ fps : 60 });        
+
+                scroller.addLayer( new Layer({
+                        selector: ".scroller-layer0",
+                        xlayer: new LayerModifier({
+                            step : 150,
+                            ease : sinEaseFunc
+                        }),
+                        ylayer: new LayerModifier({
+                            step : 150,
+                            ease : cosEaseFunc
+                        })
+                    })
+                );
+                
+                scroller.addLayer( new Layer({
+                        selector: ".scroller-layer1",
+                        ylayer: new LayerModifier({
+                            step : -10
+                        }),
+                    })
+                );
+                
+                scroller.addLayer( new Layer({
+                        selector: ".scroller-layer2",
+                        xlayer: new LayerModifier({
+                            step : -12
+                        }),
+                    })
+                );
+
+                scroller.start();
+                
+            });
+            
+        </script>
+        
+    </head>
+    <body>
+        <div class="content">Content</div>
+      
+        <div class="scroller">
+            <div class="scroller-layer0"/>
+            <div class="scroller-layer1"/>
+            <div class="scroller-layer2"/>  
+            <div class="outline"/>
+        </div>
+    </body>
+</html>
