@@ -32,7 +32,7 @@ function Layer(config){
     
     
     configure = function (config){
-        el = $(config.selector);
+        el = config.element;
     
         var pos = el.css('background-position');        
         var spos=pos.split(" ");        
@@ -93,7 +93,57 @@ function ParallaxScroller(config) {
     initialize(config);
 };
 
+$.fn.parallax = function(){
+        this.each( function() {
+            var api = new ParallaxScrollerAPI();
+            api.applyParallax(this);
+        });
+};
 
+function ParallaxScrollerAPI(){
 
-
-
+    this.applyParallax = function(target){
+        this.setupCss(target);
+        this.setupParallax(target);
+        
+    }
+    
+    this.setupCss = function(target){        
+        var ul = $(target);
+        
+        ul.children().each( function(index){
+          var li = $(this);
+        
+            li.css({
+                "background-image" : "url('" + li.attr('data-img') + "')",
+                "height" : li.attr('data-height'),
+                "width" : li.attr('data-width'),
+                "z-index" : index
+            })
+         
+        });        
+    } 
+    
+    this.setupParallax = function(target){
+        var ul = $(target);
+        var dfps = ul.attr('data-fps');
+        var ps = new ParallaxScroller({ fps : (dfps !== undefined ?  dfps : 60) });
+        
+        ul.children().each( function(index){
+          var li = $(this);
+            
+            ps.addLayer( new Layer({
+                element : li,
+                xlayer : new LayerModifier({
+                    step : li.attr('data-xi')
+                }),
+                ylayer : new LayerModifier({
+                    step : li.attr('data-yi')
+                })
+            }) );
+        
+        });
+        
+        ps.start();
+    }
+};

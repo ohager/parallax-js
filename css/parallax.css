@@ -52,3 +52,20 @@ body{
     background-position: 0px -20px;
     background-attachment: fixed;
 }
+
+.scrollerNew{
+  
+}
+
+ul.scrollerNew{
+    list-style-type:none;
+}
+
+ul.scrollerNew li{
+    position: absolute;
+    background-attachment : fixed;
+    background-position : 0px 0px;
+    background-image: url("");
+    background-repeat: repeat;
+}
+
