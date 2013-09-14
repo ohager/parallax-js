@@ -8,9 +8,8 @@
         <meta name="description" content="Testbed for parallax scroller development.">
         
         <link rel="stylesheet" href="css/parallax-demo.css">    
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="application/javascript"> </script>
-        <script src="js/requestAnimationFrame.js" type="application/javascript"></script>
-        <script src="http://parallax-js.googlecode.com/svn/tags/1/js/parallax.js" > </script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="application/javascript"> </script>        
+        <script src="../trunk/js/jquery.parallax.min.js" > </script>
         
         <script type="application/javascript">
             
@@ -27,7 +26,7 @@
                 var scroller = new ParallaxScroller({ fps : 60 });        
 
                 scroller.addLayer( new Layer({
-                        selector: ".scroller-layer0",
+                        element: $(".scroller-layer0"),
                         xlayer: new LayerModifier({
                             step : 150,
                             ease : sinEaseFunc
@@ -40,7 +39,7 @@
                 );
                 
                 scroller.addLayer( new Layer({
-                        selector: ".scroller-layer1",
+                        element: $(".scroller-layer1"),
                         ylayer: new LayerModifier({
                             step : -10
                         }),
@@ -48,12 +47,13 @@
                 );
                 
                 scroller.addLayer( new Layer({
-                        selector: ".scroller-layer2",
+                        element: $(".scroller-layer2"),
                         xlayer: new LayerModifier({
                             step : -12
                         }),
                     })
                 );
+                              
 
                 scroller.start();
                 
