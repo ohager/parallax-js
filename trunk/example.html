@@ -9,12 +9,23 @@
         
         <link rel="stylesheet" href="css/parallax.css">    
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="application/javascript"> </script>
-        <script src="js/requestAnimationFrame.js" type="application/javascript"></script>
+        <!-- <script src="js/requestAnimationFrame.js" type="application/javascript"></script>-->
         <script src="js/parallax.js" type="text/javascript"> </script>
         
         <script type="application/javascript">
             
+            function sinEaseFunc(elapsedSeconds, step){                                    
+                    return Math.sin(elapsedSeconds/10)*step;
+                }
+                
+            function cosEaseFunc(elapsedSeconds, step){                                    
+                    return Math.cos(elapsedSeconds/10)*step;
+                }
+            
             /*
+            
+            Internal API 
+            
             $(function(){
                 
                 function sinEaseFunc(elapsedSeconds, step){                                    
@@ -61,7 +72,9 @@
             });
             */
             $(function() {
-                $(".scrollerNew").parallax();
+                $(".scrollerNew").parallax([
+                    { xf : sinEaseFunc , yf : cosEaseFunc }
+                ]);
         });
         </script>
         
@@ -69,6 +82,7 @@
     <body>
         <div class="content">Content</div>
       <!--
+        Internal API
         <div class="scroller">
             <div class="scroller-layer0"/>
             <div class="scroller-layer1"/>
@@ -77,8 +91,10 @@
         </div>
         -->
         <ul class="scrollerNew" data-fps='60'>
-            <li data-img='img/tex5.jpg' data-width='100px' data-height='200px' data-xi='6' data-yi='0'></li>
-            <li data-img='img/tex3.png' data-width='100px' data-height='200px' data-xi='12' data-yi='2'></li>
+            <li data-img='img/tex5.jpg' data-width='549px' data-height='168px' data-xi='150' data-yi='150' data-repeat="repeat"></li>
+            <li data-img='img/tex3.png' data-width='549px' data-height='168px' data-xi='12' data-yi='4' data-repeat="repeat"></li>
+            <li data-img='img/texttex.png' data-width='549px' data-height='168px' data-yi='-10' data-repeat="repeat-y"></li>
+            <li data-img='img/aufgerissen.png' data-width='549px' data-height='168px' data-repeat="no-repeat"></li>
         </ul>
         
     </body>
