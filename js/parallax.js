@@ -1,19 +1,52 @@
+// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+// requestAnimationFrame polyfill by Erik Möller
+// fixes from Paul Irish and Tino Zijdel
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+ 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+ 
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
+
+
 function LayerModifier(config){
     var that = this;
     
     this.pos = 0.0;
     this.step = 0;
+    this.bias = 0;
     this.ease = function(secs, stp){ return secs * stp };
     
     if(config!==undefined){
         this.step = config.step !== undefined ? config.step : this.step;        
         this.ease = config.ease !== undefined ? config.ease : this.ease; 
+        this.bias = config.bias !== undefined ? config.bias : this.bias; 
     }
         
     this.update = function(elapsedSeconds){        
         if(that.ease != null){
             that.pos = that.ease(elapsedSeconds, that.step);
         }
+        that.pos += that.bias;
     }    
 }
 
@@ -93,29 +126,33 @@ function ParallaxScroller(config) {
     initialize(config);
 };
 
-$.fn.parallax = function(){
+(function($){
+$.fn.parallax = function(config){
         this.each( function() {
-            var api = new ParallaxScrollerAPI();
+            var api = new ParallaxScrollerAPI(config);
             api.applyParallax(this);
         });
 };
+})(jQuery);
 
-function ParallaxScrollerAPI(){
+function ParallaxScrollerAPI(config){
 
     this.applyParallax = function(target){
-        this.setupCss(target);
-        this.setupParallax(target);
+        this.setupCss(target, config);
+        this.setupParallax(target, config);
         
     }
     
-    this.setupCss = function(target){        
+    this.setupCss = function(target, config){        
         var ul = $(target);
         
         ul.children().each( function(index){
-          var li = $(this);
-        
+            var li = $(this);
+            var lcfg = config[index];
+            
             li.css({
                 "background-image" : "url('" + li.attr('data-img') + "')",
+                "background-repeat": li.attr('data-repeat'),
                 "height" : li.attr('data-height'),
                 "width" : li.attr('data-width'),
                 "z-index" : index
@@ -124,21 +161,27 @@ function ParallaxScrollerAPI(){
         });        
     } 
     
-    this.setupParallax = function(target){
+    this.setupParallax = function(target, config){
         var ul = $(target);
         var dfps = ul.attr('data-fps');
         var ps = new ParallaxScroller({ fps : (dfps !== undefined ?  dfps : 60) });
         
         ul.children().each( function(index){
-          var li = $(this);
+            var li = $(this);
+            var lcfg = config[index];
+            var rect = this.getBoundingClientRect();
             
             ps.addLayer( new Layer({
                 element : li,
                 xlayer : new LayerModifier({
-                    step : li.attr('data-xi')
+                    step : li.attr('data-xi'),
+                    bias : rect.left,
+                    ease : lcfg !== undefined ? lcfg.xf : undefined
                 }),
                 ylayer : new LayerModifier({
-                    step : li.attr('data-yi')
+                    step : li.attr('data-yi'),
+                    bias : rect.top,
+                    ease : lcfg !== undefined ? lcfg.yf : undefined
                 })
             }) );
         
