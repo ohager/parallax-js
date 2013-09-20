@@ -1,0 +1,16 @@
+#summary API Documentation of parallax-js
+
+= Prerequisites =
+
+`parallax-js` is a jQuery plugin, so you need to include a current version of jQuery either. 
+Additionally, you need images for your layers. It is recommended to use PNG, due to its alpha channel support. JPG is only useful for the farest layer (lowest z-Index).
+
+= Quick Start =
+
+To mount a parallax you need at least one layer. The more layers you use, the better the depth effect, but also comes with higher resource demands.
+
+
+
+{{{
+
+}}}
