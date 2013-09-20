@@ -90,6 +90,7 @@ function ParallaxScroller(config) {
     var layers = [];
     var lastTimestamp = 0;
     var ifps = 1000/60;
+    var elapsedSecs=0;
     
     this.addLayer = function(layer){
         layers.push(layer);    
@@ -106,11 +107,15 @@ function ParallaxScroller(config) {
     }
     
     function update(timestamp){
-        var timeout = lastTimestamp==0 ? true : timestamp-lastTimestamp>=ifps;
+        if(lastTimestamp==0){
+            lastTimestamp=timestamp;
+        }
+        var deltaMs = timestamp-lastTimestamp;
         
-        if(timeout){
-            that.render(timestamp/1000);
-            lastTimestamp = timestamp;        
+        if(deltaMs>=ifps){
+            elapsedSecs+=deltaMs/1000.0;
+            that.render(elapsedSecs);
+            lastTimestamp = timestamp;            
         }                
         requestAnimationFrame(update);
     }
@@ -146,11 +151,14 @@ function ParallaxScrollerAPI(config){
     this.setupCss = function(target, config){        
         var ul = $(target);
         
+        ul.css({"list-style-type":"none"});
+        
         ul.children().each( function(index){
             var li = $(this);
-            var lcfg = config[index];
             
             li.css({
+                "position":"absolute",
+                "background-attachment": "fixed",
                 "background-image" : "url('" + li.attr('data-img') + "')",
                 "background-repeat": li.attr('data-repeat'),
                 "height" : li.attr('data-height'),
@@ -168,7 +176,7 @@ function ParallaxScrollerAPI(config){
         
         ul.children().each( function(index){
             var li = $(this);
-            var lcfg = config[index];
+            var lcfg = config !== undefined ? config[index] : undefined;
             var rect = this.getBoundingClientRect();
             
             ps.addLayer( new Layer({
