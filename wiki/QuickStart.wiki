@@ -49,7 +49,7 @@ _Example:_
 
 == Quick Parameter Explanation ==
 
-`.ul[data-fps]` : Frames per second from 0.0 upt 60.0
+`.ul[data-fps]` : Frames per second from 0.0 up to 60.0
 
 `.li[data-img]` : The image used for this layer. PNGs is the recommended format due to its alpha channel support.
 
