@@ -8,7 +8,9 @@ Additionally, you need images for your layers. It is recommended to use PNG, due
 
 = Version =
 
-For parallax-js a very simple and transparent versioning scheme is used. The higher the tag number, the new the version, for example
+For parallax-js a very simple and transparent versioning scheme is used. The higher the tag number, the newer the version.
+
+Example:
 
 `http://parallax-js.googlecode.com/svn/tags/2/js/jquery.parallax.min.js`
 
