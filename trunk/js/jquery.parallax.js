@@ -31,10 +31,10 @@
 function LayerModifier(config){
     var that = this;
     
-    this.pos = 0.0;
+    this.pos = 0;
     this.step = 0;
     this.bias = 0;
-    this.ease = function(secs, stp){ return secs * stp };
+    this.ease = function(millies, stp){ return Math.floor((millies* stp)/1000); }
     
     if(config!==undefined){
         this.step = config.step !== undefined ? config.step : this.step;        
@@ -42,9 +42,9 @@ function LayerModifier(config){
         this.bias = config.bias !== undefined ? config.bias : this.bias; 
     }
         
-    this.update = function(elapsedSeconds){        
+    this.update = function(elapsedMillies){        
         if(that.ease != null){
-            that.pos = that.ease(elapsedSeconds, that.step);
+            that.pos = that.ease(elapsedMillies, that.step);
         }
         that.pos += that.bias;
     }    
@@ -90,7 +90,7 @@ function ParallaxScroller(config) {
     var layers = [];
     var lastTimestamp = 0;
     var ifps = 1000/60;
-    var elapsedSecs=0;
+    var elapsedMillies=0;
     
     this.addLayer = function(layer){
         layers.push(layer);    
@@ -100,21 +100,18 @@ function ParallaxScroller(config) {
         requestAnimationFrame(update);
     }
     
-    this.render=function(elapsedSeconds){        
+    this.render=function(elapsedMillies){        
         for(var i=0; i<layers.length; ++i){
-            layers[i].update(elapsedSeconds);
+            layers[i].update(elapsedMillies);
         }        
     }
     
     function update(timestamp){
-        if(lastTimestamp==0){
-            lastTimestamp=timestamp;
-        }
         var deltaMs = timestamp-lastTimestamp;
         
         if(deltaMs>=ifps){
-            elapsedSecs+=deltaMs/1000.0;
-            that.render(elapsedSecs);
+            elapsedMillies+=deltaMs;
+            that.render(elapsedMillies);
             lastTimestamp = timestamp;            
         }                
         requestAnimationFrame(update);
@@ -124,7 +121,7 @@ function ParallaxScroller(config) {
         if(config !== undefined){            
             ifps = config.fps !== undefined ? 1000/config.fps : 1000/60;            
         }
-        
+        lastTimestamp=new Date().getTime();
     
     }    
     
