@@ -19,4 +19,3 @@ To achieve the impression of depth in a 2D environment several partially opaque 
   * Highly customizable, e.g. assign non-linear translations functions, Frames per second 
   * Uses requestAnimationFrame() for better performance
   * As many layers as your computer endures
-  * Automatic relative positioning 
